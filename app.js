@@ -1,4 +1,4 @@
-
+//DOM Variables:
 const one = document.getElementById('one');
 const two = document.getElementById('two');
 const three = document.getElementById('three');
@@ -17,7 +17,6 @@ const division = document.getElementById('division');
 const dot = document.getElementById('dot');
 const percentual = document.getElementById('percetual');
 
-
 const keyboard = document.getElementById('teclado');
 const clear = document.getElementById('clear');
 const cancelEntry = document.getElementById('cancel-entry');
@@ -27,10 +26,13 @@ const botao = document.querySelectorAll('botao');
 
 
 
-//Display número único no resultado:
 
-const display = (number) => {
-    let displayCalc = resultado.textContent += number;
+/*Show numbers only until input is full and disable number buttons.
+In the end of the function, call the function that controls when user can use the dot.
+*/
+const display = (string) => {
+    
+    let displayCalc = resultado.textContent += string;
     if (displayCalc.length >= 15) {
         one.disabled = true;
         two.disabled = true;
@@ -42,7 +44,7 @@ const display = (number) => {
         eigth.disabled = true;
         nine.disabled = true;
         zero.disabled = true;
-    } else {
+    }   else  {
         one.disabled = false;
         two.disabled = false;
         three.disabled = false;
@@ -53,10 +55,30 @@ const display = (number) => {
         eigth.disabled = false;
         nine.disabled = false;
         zero.disabled = false;
+
+    }
+    displayDot1(resultado.textContent);
+
+};
+
+//Allow dot only under certain circumstances:
+const displayDot1 = (string) => {
+    string = document.getElementById('resultado').textContent;
+    if (/^[\d]*$/.test(string) == true) {
+        document.getElementById('dot').disabled = false;
+    } else if (/^[\d]*\.?[\d]*$/.test(string) == true) {
+        document.getElementById('dot').disabled = true;
+    } else if (/^[\d]*\.?[\d]*[\+\-\*\/\%][\d]*[\d]*$/.test(string) == true) {
+        document.getElementById('dot').disabled = false;
+    } else if (/^[\d]*\.?[\d]*[\+\-\*\/\%][\d]*\.[\d]*$/.test(string) == true) {
+        document.getElementById('dot').disabled = true;
     }
 };
 
+
+
 const operate = (string) => {
+
     if(typeof string == 'number') {
         return string === string;
     } else if (string.includes('+')) {
@@ -79,33 +101,58 @@ const operate = (string) => {
         let firstNumber = string.slice(0, whereIsOperator);
         let secondNumber = string.slice(whereIsOperator + 1);
         divide(firstNumber, secondNumber);
+    } else if (string.includes('%')) {
+        let whereIsOperator = string.indexOf('%');
+        let firstNumber = string.slice(0, whereIsOperator);
+        let secondNumber = string.slice(whereIsOperator + 1);
+        percent(firstNumber, secondNumber);
     }
 }
                                                               
 const add = (num1, num2) => {
     let addResult = `${Number(num1)+Number(num2)}`;
+    display(addResult)
     return resultado.textContent = addResult;
+    
 };
 
 const subtract = (num1, num2) => {
     let subtractResult = `${Number(num1)-Number(num2)}`;
+    display(subtractResult)
     return resultado.textContent = subtractResult;
 };
 
 const multiply = (num1, num2) => {
-    let multiplyResult = `${Number(num1)*Number(num2)}`;
+    let multiplyResult = `${Number(num1)*Number(num2)}`;    
+    display(multiplyResult)
     return resultado.textContent = multiplyResult;
 };
 
 const divide = (num1, num2) => {
     let divideResult = `${Number(num1)/Number(num2)}`;
-    return resultado.textContent = divideResult;
+    display(divideResult)
+    if (num2 == 0) {
+        return resultado.textContent = 'Infinito e além';
+    } else {
+        ;
+        if (/[\d]*[.][\d]*/.test(divideResult) == true) {
+            return resultado.textContent = Number(divideResult).toFixed(3)
+        } else {
+            return resultado.textContent = divideResult;
+        }
+    }
+};
+
+const percent = (num1, num2) => {
+    let percentResult = `${Number(num1)*0.01*Number(num2)}`;
+    display(percentResult)
+    return resultado.textContent = percentResult;
 };
 
 const deleteLast = (string) => {
     let corrected = string.substring(0, string.length - 1);
     return resultado.textContent = corrected;
-}
+};
 
 // Events:
 one.addEventListener('click', () => display('1'));
@@ -122,20 +169,60 @@ zero.addEventListener('click', () => display('0'));
 clear.addEventListener('click', () => window.location.reload(true));
 cancelEntry.addEventListener('click', () => deleteLast(resultado.textContent));
 
-plus.addEventListener('click', () => display('+'));
-minus.addEventListener('click', () => display('-'));
-multiplication.addEventListener('click', () => display('x'));
-division.addEventListener('click', () => display('/'));
-percentual.addEventListener('click', () => display('%'));
+plus.addEventListener('click', () => {
+    if (/^[\d]*\.?[\d]*[\+\-\x\/\%][\d]*\.?[\d]*$/.test(resultado.textContent) == true) {
+        operate(resultado.textContent);
+        display('+');
+    } else {
+        display('+')
+    }
+});
+
+
+minus.addEventListener('click', () => {
+    if (/^[\d]*\.?[\d]*[\+\-\x\/\%][\d]*\.?[\d]*$/.test(resultado.textContent) == true) {
+        operate(resultado.textContent);
+        display('-');
+    } else {
+        display('-')
+    }
+});
+
+multiplication.addEventListener('click', () => {
+    if (/^[\d]*\.?[\d]*[\+\-\x\/\%][\d]*\.?[\d]*$/.test(resultado.textContent) == true) {
+        operate(resultado.textContent);
+        display('x');
+    } else {
+        display('x')
+    }
+});
+
+division.addEventListener('click', () => {
+    if (/^[\d]*\.?[\d]*[\+\-\x\/\%][\d]*\.?[\d]*$/.test(resultado.textContent) == true) {
+        operate(resultado.textContent);
+        display('/');
+    } else {
+        display('/')
+    }
+});
+
+percentual.addEventListener('click', () => {
+    if (/^[\d]*\.?[\d]*[\+\-\x\/\%][\d]*\.?[\d]*$/.test(resultado.textContent) == true) {
+        operate(resultado.textContent);
+        display('%');
+    } else {
+        display('%')
+    }
+});
+
+
 dot.addEventListener('click', () => display('.'));
 equal.addEventListener('click', () => operate(resultado.textContent));
 
+    
+document.addEventListener('keydown', (e) => {
+
+    display(e.key == '0' || e.key == '1' || e.key == '2' || e.key == '3' || e.key == '4' || e.key == '5' || e.key == '6' || e.key == '7' || e.key == '8' || e.key == '9' ? e.key : '')
+});
 
 
-// if(displayCalc2.length >= 3) {
-//     stopInsert();
-// }
-// const stopInsert = () => {
-//     botao.disabled = true;
-
-// };
