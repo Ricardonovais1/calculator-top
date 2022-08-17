@@ -3,9 +3,12 @@
 
 @media only screen and (max-device-width: 900px) {
     .calculadora {margin: 10px }
-    .logo {margin-bottom: 0px;}
+    .logo {margin-bottom: 10px;}
 }
-
+@media only screen and (max-device-width: 600px) {
+    .calculadora {width: 80vw }
+    .logo {margin-bottom: 10px;}
+}
 
 body {
     display: flex;
