@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Asap+Condensed&display=swap');
 
 
-@media only screen and (max-device-width: 600px) {
+@media only screen and (max-device-width: 900px) {
     .calculadora {margin: 10px }
     .logo {margin-bottom: 0px;}
 }
