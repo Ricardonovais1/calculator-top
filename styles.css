@@ -82,6 +82,10 @@ body {
     gap: 1px;
 }
 
+#equal {
+    height: 106px;
+}
+
 .botao:hover {
     background-color: #969696;
 
@@ -91,7 +95,6 @@ button {
     font-family: 'Asap Condensed', sans-serif;
     text-decoration: none;
 }
-
 
 
 
@@ -110,14 +113,21 @@ button {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(3, minmax(200px, auto));
     }
+
     .logo {
     max-width: 150px;
     }
+
     .botao {
     width: 40px;
     height: 40px;
     font-size: 20px;
     }
+
+    #equal {
+        height: 85px;
+    }
+
     #resultado {
     width: 150px;
     font-size: 20px;
